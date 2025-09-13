@@ -1,24 +1,22 @@
-//
-//  ContentView.swift
-//  ChickenAdventure
-//
-//  Created by Vlad on 13/09/2025.
-//
 
 import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
+        TextView()
     }
 }
 
-#Preview {
-    ContentView()
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
+
+struct TextView: View {
+    var body: some View {
+        VStack {
+            Text("авыораолыв")
+        }
+    }
 }

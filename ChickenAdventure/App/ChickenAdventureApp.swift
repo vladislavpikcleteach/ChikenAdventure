@@ -1,9 +1,3 @@
-//
-//  ChickenAdventureApp.swift
-//  ChickenAdventure
-//
-//  Created by Vlad on 13/09/2025.
-//
 
 import SwiftUI
 
@@ -11,7 +5,7 @@ import SwiftUI
 struct ChickenAdventureApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+          CoordinatorView()
         }
     }
 }
