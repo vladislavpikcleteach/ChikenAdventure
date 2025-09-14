@@ -1,6 +1,5 @@
 import Foundation
 
-// MARK: - UserProfileModel
 struct UserProfileModel: Codable {
     var userName: String
     var hasAvatar: Bool

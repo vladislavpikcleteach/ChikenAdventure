@@ -2,22 +2,19 @@ import UIKit
 import AVFoundation
 import Photos
 
-// MARK: - Permission Status
 enum PermissionStatus {
     case authorized
     case denied
     case notDetermined
     case restricted
-    case limited // Only for Photos
+    case limited
 }
 
-// MARK: - Permission Type
 enum PermissionType {
     case camera
     case photoLibrary
 }
 
-// MARK: - Permission Manager Protocol
 protocol PermissionManagerProtocol {
     func checkCameraPermission() -> PermissionStatus
     func checkPhotoLibraryPermission() -> PermissionStatus
@@ -31,10 +28,8 @@ protocol PermissionManagerProtocol {
     ) -> UIAlertController
 }
 
-// MARK: - Permission Manager
 final class PermissionManager: PermissionManagerProtocol {
     
-    // MARK: - Camera Permission
     func checkCameraPermission() -> PermissionStatus {
         let status = AVCaptureDevice.authorizationStatus(for: .video)
         switch status {
@@ -59,7 +54,6 @@ final class PermissionManager: PermissionManagerProtocol {
         }
     }
     
-    // MARK: - Photo Library Permission
     func checkPhotoLibraryPermission() -> PermissionStatus {
         let status = PHPhotoLibrary.authorizationStatus(for: .readWrite)
         switch status {
@@ -87,7 +81,6 @@ final class PermissionManager: PermissionManagerProtocol {
         }
     }
     
-    // MARK: - Settings Navigation
     func openAppSettings() {
         guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
             return
@@ -99,7 +92,6 @@ final class PermissionManager: PermissionManagerProtocol {
     }
 }
 
-// MARK: - Permission Alert Helper
 extension PermissionManager {
     
     func createPermissionAlert(
@@ -116,12 +108,10 @@ extension PermissionManager {
             preferredStyle: .alert
         )
         
-        // Settings Action
         let settingsAction = UIAlertAction(title: "Settings", style: .default) { _ in
             onSettings()
         }
         
-        // Cancel Action
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
             onCancel()
         }

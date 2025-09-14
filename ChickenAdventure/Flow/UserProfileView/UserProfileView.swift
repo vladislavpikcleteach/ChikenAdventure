@@ -11,7 +11,6 @@ struct ProfileView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 30) {
-                // Header
                 VStack(spacing: 10) {
                     Text(viewModel.headerTitle)
                         .font(AppTheme.typography.largeTitle)
@@ -24,9 +23,7 @@ struct ProfileView: View {
                 }
                 .padding(.top, 20)
                 
-                // Avatar Section
                 VStack(spacing: 20) {
-                    // Avatar Display
                     Button {
                         viewModel.openGallery()
                     } label: {
@@ -44,7 +41,6 @@ struct ProfileView: View {
                         .appAvatar()
                     }
                     
-                    // Avatar Actions
                     HStack(spacing: 15) {
                         SecondaryButton(viewModel.galleryButtonTitle) {
                             viewModel.openGallery()
@@ -56,26 +52,22 @@ struct ProfileView: View {
                     }
                 }
                 
-                // Name Section
                 AppTextField(viewModel.nameFieldTitle, placeholder: viewModel.nameFieldPlaceholder, text: $viewModel.tempUserName)
                     .padding(.horizontal, AppTheme.spacing.screenPadding)
                 
                 
-                // Action Buttons
                 VStack(spacing: 15) {
-                    // Save Profile
                     PrimaryButton(viewModel.startAdventureButtonTitle, isEnabled: viewModel.canSave) {
                         viewModel.startAdventure()
                     }
                     
-                    // Delete Profile (if exists)
+
                     if viewModel.userProfile.hasProfile {
                         DeleteButton(viewModel.deleteProfileButtonTitle) {
                             viewModel.showDeleteAlert = true
                         }
                     }
                     
-                    // Skip for now
                     SecondaryButton(viewModel.skipButtonTitle) {
                         viewModel.skipForNow()
                     }

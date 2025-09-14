@@ -1,6 +1,5 @@
 import SwiftUI
 
-// MARK: - LoadingIndicator
 struct LoadingIndicator: View {
     @State private var isAnimating = false
     let dotCount: Int
@@ -32,7 +31,6 @@ struct LoadingIndicator: View {
     }
 }
 
-// MARK: - Preview
 #Preview {
     VStack(spacing: 20) {
         LoadingIndicator()

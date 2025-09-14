@@ -1,7 +1,6 @@
 import Foundation
 import UIKit
 
-// MARK: - StorageServiceProtocol
 protocol StorageServiceProtocol {
     func save<T: Codable>(_ value: T, forKey key: String)
     func load<T: Codable>(_ type: T.Type, forKey key: String) -> T?
@@ -12,7 +11,6 @@ protocol StorageServiceProtocol {
     func loadBool(forKey key: String) -> Bool
 }
 
-// MARK: - UserDefaultsStorageService
 final class UserDefaultsStorageService: StorageServiceProtocol {
     private let userDefaults = UserDefaults.standard
     

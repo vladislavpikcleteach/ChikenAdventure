@@ -1,6 +1,5 @@
 import SwiftUI
 
-// MARK: - AppBackground
 struct AppBackground: View {
     var body: some View {
         Image("Background")
@@ -10,7 +9,6 @@ struct AppBackground: View {
     }
 }
 
-// MARK: - Preview
 #Preview {
     AppBackground()
 }

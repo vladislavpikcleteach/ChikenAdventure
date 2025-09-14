@@ -1,6 +1,5 @@
 import SwiftUI
 
-// MARK: - ChickenAvatar
 struct ChickenAvatar: View {
     let size: CGFloat
     
@@ -27,7 +26,6 @@ struct ChickenAvatar: View {
     }
 }
 
-// MARK: - Preview
 #Preview {
     VStack(spacing: 20) {
         ChickenAvatar(size: 60)

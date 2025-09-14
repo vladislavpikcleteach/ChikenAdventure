@@ -13,10 +13,8 @@ final class ProfileViewModel: ObservableObject {
     private let coordinator: NavigationCoordinator
     let permissionManager: PermissionManagerProtocol
     
-    // Permission alert state
     private var pendingPermissionType: PermissionType?
     
-    // MARK: - UI Texts
     let headerTitle = "Your Profile"
     let headerSubtitle = "Create your identity for the adventure"
     let nameFieldTitle = "Your Name"
@@ -76,7 +74,6 @@ final class ProfileViewModel: ObservableObject {
         }
     }
     
-    // MARK: - Permission Handling
     func openGallery() {
         let status = permissionManager.checkPhotoLibraryPermission()
         
@@ -130,7 +127,6 @@ final class ProfileViewModel: ObservableObject {
         permissionManager.openAppSettings()
     }
     
-    // MARK: - Permission Alert Content
     var permissionAlertTitle: String {
         guard let type = pendingPermissionType else { return "" }
         switch type {

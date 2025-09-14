@@ -1,6 +1,5 @@
 import SwiftUI
 
-// MARK: - ProgressIndicator
 struct ProgressIndicator: View {
     let currentStep: Int
     let totalSteps: Int
@@ -31,7 +30,6 @@ struct ProgressIndicator: View {
     }
 }
 
-// MARK: - Preview
 #Preview {
     VStack(spacing: 20) {
         ProgressIndicator(currentStep: 0, totalSteps: 3)

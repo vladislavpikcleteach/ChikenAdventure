@@ -6,7 +6,6 @@ struct LaunchScreenView: View {
     
     var body: some View {
         ZStack {
-            // Background (повторно задається як вимагає користувач)
             Image("Background")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
@@ -22,7 +21,6 @@ struct LaunchScreenView: View {
                 
                 Spacer()
                 
-                // Loading indicator
                 LoadingIndicator()
                 .padding(.bottom, 60)
             }

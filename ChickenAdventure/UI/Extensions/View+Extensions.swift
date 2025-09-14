@@ -1,8 +1,6 @@
 import SwiftUI
 
-// MARK: - View Extensions
 extension View {
-    // MARK: - Card Styles
     func appCard() -> some View {
         self
             .background(
@@ -26,14 +24,12 @@ extension View {
             )
     }
     
-    // MARK: - Button Animations
     func appButtonPress(isPressed: Bool = false) -> some View {
         self
             .scaleEffect(isPressed ? AppTheme.animations.buttonPressScale : 1.0)
             .animation(AppTheme.animations.quickPress, value: isPressed)
     }
     
-    // MARK: - Text Field Styles
     func appTextField() -> some View {
         self
             .font(AppTheme.typography.body)
@@ -49,7 +45,6 @@ extension View {
             .foregroundColor(Color.appDarkPink)
     }
     
-    // MARK: - Avatar Styles
     func appAvatar(size: CGFloat = 120) -> some View {
         self
             .frame(width: size, height: size)
@@ -61,7 +56,6 @@ extension View {
             .shadow(radius: 10)
     }
     
-    // MARK: - Loading Animation
     func appPulse() -> some View {
         self
             .scaleEffect(AppTheme.animations.pulseScale)

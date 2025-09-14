@@ -1,6 +1,5 @@
 import SwiftUI
 
-// MARK: - AppTheme
 struct AppTheme {
     static let colors = Color.self
     static let spacing = AppSpacing()
@@ -9,7 +8,6 @@ struct AppTheme {
     static let cornerRadius = AppCornerRadius()
 }
 
-// MARK: - AppSpacing
 struct AppSpacing {
     let xs: CGFloat = 4
     let sm: CGFloat = 8
@@ -18,14 +16,12 @@ struct AppSpacing {
     let xl: CGFloat = 32
     let xxl: CGFloat = 40
     
-    // Component specific spacing
     let buttonPaddingVertical: CGFloat = 16
     let buttonPaddingHorizontal: CGFloat = 40
     let cardPadding: CGFloat = 20
     let screenPadding: CGFloat = 30
 }
 
-// MARK: - AppTypography
 struct AppTypography {
     let largeTitle = Font.primaryBold(size: 32)
     let title1 = Font.primaryBold(size: 28)
@@ -41,7 +37,7 @@ struct AppTypography {
     let buttonSecondary = Font.primaryRegular(size: 16)
 }
 
-// MARK: - AppAnimations
+
 struct AppAnimations {
     let quickPress = Animation.easeInOut(duration: 0.1)
     let smoothTransition = Animation.spring(duration: 0.5)
@@ -51,7 +47,6 @@ struct AppAnimations {
     let pulseScale: CGFloat = 1.15
 }
 
-// MARK: - AppCornerRadius
 struct AppCornerRadius {
     let small: CGFloat = 8
     let medium: CGFloat = 15

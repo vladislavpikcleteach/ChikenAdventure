@@ -1,6 +1,5 @@
 import SwiftUI
 
-// MARK: - PrimaryButton
 struct PrimaryButton: View {
     let title: String
     let action: () -> Void
@@ -27,7 +26,6 @@ struct PrimaryButton: View {
     }
 }
 
-// MARK: - SecondaryButton
 struct SecondaryButton: View {
     let title: String
     let action: () -> Void
@@ -53,7 +51,6 @@ struct SecondaryButton: View {
     }
 }
 
-// MARK: - DeleteButton
 struct DeleteButton: View {
     let title: String
     let action: () -> Void
@@ -79,7 +76,6 @@ struct DeleteButton: View {
     }
 }
 
-// MARK: - StoryChoiceButton
 struct StoryChoiceButton: View {
     let title: String
     let action: () -> Void
@@ -103,7 +99,6 @@ struct StoryChoiceButton: View {
     }
 }
 
-// MARK: - Button Styles
 struct PrimaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -174,7 +169,6 @@ struct StoryChoiceButtonStyle: ButtonStyle {
     }
 }
 
-// MARK: - Preview
 #Preview {
     VStack(spacing: 20) {
         PrimaryButton("Primary Button") { }

@@ -9,7 +9,6 @@ final class GameViewModel: ObservableObject {
     
     @ObservedObject private var storyService: StoryService
     
-    // MARK: - UI Icons
     let profileIconName = "person.circle"
     let restartIconName = "arrow.clockwise"
     

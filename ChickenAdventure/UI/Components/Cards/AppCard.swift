@@ -1,6 +1,5 @@
 import SwiftUI
 
-// MARK: - AppCard
 struct AppCard<Content: View>: View {
     let content: Content
     
@@ -14,7 +13,6 @@ struct AppCard<Content: View>: View {
     }
 }
 
-// MARK: - Preview
 #Preview {
     VStack(spacing: 20) {
         AppCard {

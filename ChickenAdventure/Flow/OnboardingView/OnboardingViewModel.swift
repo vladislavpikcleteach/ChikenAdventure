@@ -5,7 +5,6 @@ final class OnboardingViewModel: ObservableObject {
     
     private let navigationCoordinator: any NavigationCoordinatorProtocol
     
-    // MARK: - Data
     let titles = [
         "Welcome to Chicken Adventure",
         "Choose Your Path",
@@ -21,17 +20,14 @@ final class OnboardingViewModel: ObservableObject {
     let imageName = "Background"
     let totalPages = 3
     
-    // MARK: - UI Texts
     let previousButtonTitle = "Previous"
     let nextButtonTitle = "Next"
     let getStartedButtonTitle = "Get Started"
     
-    // MARK: - Init
     init(navigationCoordinator: any NavigationCoordinatorProtocol) {
         self.navigationCoordinator = navigationCoordinator
     }
     
-    // MARK: - Computed Properties
     var currentTitle: String {
         titles[currentPage]
     }
@@ -48,7 +44,6 @@ final class OnboardingViewModel: ObservableObject {
         currentPage > 0
     }
     
-    // MARK: - Actions
     func nextPage() {
         if currentPage < totalPages - 1 {
             withAnimation {

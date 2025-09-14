@@ -1,6 +1,5 @@
 import SwiftUI
 
-// MARK: - ScrollableTextView
 struct ScrollableTextView: View {
     let text: String
     let font: Font
@@ -35,7 +34,6 @@ struct ScrollableTextView: View {
     }
 }
 
-// MARK: - Preview
 #Preview {
     VStack(spacing: 20) {
         AppCard {

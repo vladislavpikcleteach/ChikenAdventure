@@ -1,6 +1,5 @@
 import SwiftUI
 
-// MARK: - AppTextField
 struct AppTextField: View {
     let title: String
     let placeholder: String
@@ -24,7 +23,6 @@ struct AppTextField: View {
     }
 }
 
-// MARK: - Preview
 #Preview {
     VStack(spacing: 20) {
         AppTextField("Your Name", placeholder: "Enter your name", text: .constant(""))

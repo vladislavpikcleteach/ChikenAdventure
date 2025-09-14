@@ -1,6 +1,5 @@
 import Foundation
 
-// MARK: - EndingType
 enum EndingType: String, CaseIterable {
     case flight = "flight"
     case family = "family"
@@ -17,7 +16,6 @@ enum EndingType: String, CaseIterable {
     }
 }
 
-// MARK: - StoryNode
 final class StoryNode: Identifiable, ObservableObject {
     let id = UUID()
     let text: String
@@ -30,7 +28,6 @@ final class StoryNode: Identifiable, ObservableObject {
     }
 }
 
-// MARK: - StoryChoice
 struct StoryChoice: Identifiable {
     let id = UUID()
     let text: String

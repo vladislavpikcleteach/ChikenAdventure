@@ -7,7 +7,6 @@ enum AppScreen: CaseIterable {
     case gameView
 }
 
-// MARK: - NavigationCoordinatorProtocol
 protocol NavigationCoordinatorProtocol: ObservableObject {
     var currentScreen: AppScreen { get }
     func navigate(to screen: AppScreen)
@@ -15,7 +14,7 @@ protocol NavigationCoordinatorProtocol: ObservableObject {
     func getUserService() -> UserService
 }
 
-// MARK: - NavigationCoordinator
+
 final class NavigationCoordinator: NavigationCoordinatorProtocol {
     @Published var currentScreen: AppScreen = .launchScreen
     
@@ -28,7 +27,6 @@ final class NavigationCoordinator: NavigationCoordinatorProtocol {
         self.onboardingService = onboardingService
         self.permissionManager = permissionManager
         
-        // Auto-navigate after launch screen
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.checkInitialScreen()
         }
@@ -70,7 +68,6 @@ final class NavigationCoordinator: NavigationCoordinatorProtocol {
     }
 }
 
-// MARK: - CoordinatorView
 struct CoordinatorView: View {
     @ObservedObject private var coordinator: NavigationCoordinator
     

@@ -10,7 +10,6 @@ struct OnboardingView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            // Progress indicator
             ProgressIndicator(
                 currentStep: viewModel.currentPage,
                 totalSteps: viewModel.totalPages
@@ -19,7 +18,6 @@ struct OnboardingView: View {
             
             Spacer()
             
-            // Content
             TabView(selection: $viewModel.currentPage) {
                 ForEach(0..<viewModel.totalPages, id: \.self) { index in
                     OnboardingPageView(
@@ -35,7 +33,6 @@ struct OnboardingView: View {
             
             Spacer()
             
-            // Navigation buttons
             HStack(spacing: 20) {
                 if viewModel.canGoBack {
                     SecondaryButton(viewModel.previousButtonTitle) {
@@ -66,7 +63,6 @@ struct OnboardingPageView: View {
     
     var body: some View {
         VStack(spacing: 40) {
-            // Image
             Image(imageName)
                 .resizable()
                 .aspectRatio(contentMode: .fit)

@@ -1,7 +1,6 @@
 import Foundation
 import SwiftUI
 
-// MARK: - StoryServiceProtocol
 protocol StoryServiceProtocol: ObservableObject {
     var currentNode: StoryNode { get }
     var activeEnding: EndingType? { get }
@@ -11,7 +10,6 @@ protocol StoryServiceProtocol: ObservableObject {
     func restart()
 }
 
-// MARK: - StoryService
 final class StoryService: ObservableObject, StoryServiceProtocol {
     @Published private(set) var currentNode: StoryNode
     @Published private(set) var activeEnding: EndingType?
@@ -20,7 +18,6 @@ final class StoryService: ObservableObject, StoryServiceProtocol {
     private let rootNode: StoryNode
     
     init() {
-        // --- Endings ---
         let flightEnding = StoryNode(
             text: "You spread your wings wide, feeling the wind beneath your feathers. The farm below grows smaller as you soar higher than any chicken has ever dared to dream. You are free, you are flying, you are limitless.",
             endingType: .flight
@@ -41,7 +38,6 @@ final class StoryService: ObservableObject, StoryServiceProtocol {
             endingType: .travel
         )
         
-        // --- Intermediate nodes ---
         let flight1 = StoryNode(text: "You climb onto the highest perch in the coop. The other chickens cluck nervously below. Your heart pounds with anticipation and fear. This is it – the moment you've been preparing for.")
         let flight2 = StoryNode(text: "You begin flapping your wings frantically, trying to remember everything you learned from watching the sparrows. The ground seems so far away, but freedom calls to you.")
         let flight3 = StoryNode(text: "You feel yourself lifting slightly off the perch. It's working! But the farmer is approaching with a concerned look. Do you trust in your abilities?")
@@ -58,10 +54,8 @@ final class StoryService: ObservableObject, StoryServiceProtocol {
         let travel2 = StoryNode(text: "You slip through a gap in the fence one moonless night. The world beyond is vast and mysterious, full of possibilities and dangers.")
         let travel3 = StoryNode(text: "You meet a group of wild birds who offer to show you the ways of the world. They speak of distant lands and incredible sights.")
         
-        // --- Root ---
-        let root = StoryNode(text: "You wake up in your coop as dawn breaks over the farm. Around you, other chickens go about their daily routine of pecking and clucking. But you feel different today. Deep in your heart, you know you're meant for something more than this ordinary life. What path will you choose?")
+        let root = StoryNode(text: "You wake up in your coop as dawn breaks over the farm. Around you, other chickens go about their daily routine of pecking and clucking. But you feel different today. Deep in your heart, you know you're meant for something more than this ordinary life. What path will you choose?"        )
         
-        // --- Setup Choices ---
         flight1.choices = [
             StoryChoice(text: "Practice flapping more", nextNode: flight2, switchEndingTo: nil),
             StoryChoice(text: "Look for a partner instead", nextNode: family1, switchEndingTo: .family),
@@ -123,7 +117,6 @@ final class StoryService: ObservableObject, StoryServiceProtocol {
             StoryChoice(text: "Rebel against their rules", nextNode: prison1, switchEndingTo: .prison)
         ]
         
-        // Root choices
         root.choices = [
             StoryChoice(text: "Practice flying", nextNode: flight1, switchEndingTo: .flight),
             StoryChoice(text: "Look for companionship", nextNode: family1, switchEndingTo: .family),

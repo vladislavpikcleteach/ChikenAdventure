@@ -1,7 +1,6 @@
 import SwiftUI
 import UIKit
 
-// MARK: - UserServiceProtocol
 protocol UserServiceProtocol: ObservableObject {
     var profile: UserProfileModel { get }
     var avatarImage: UIImage? { get set }
@@ -13,14 +12,12 @@ protocol UserServiceProtocol: ObservableObject {
     func loadProfile()
 }
 
-// MARK: - UserService
 final class UserService: UserServiceProtocol {
     @Published var profile = UserProfileModel()
     @Published var avatarImage: UIImage?
     
     private let storageService: StorageServiceProtocol
     
-    // Storage keys
     private let profileKey = "userProfile"
     private let avatarImageKey = "avatarImage"
     
@@ -39,10 +36,9 @@ final class UserService: UserServiceProtocol {
     }
     
     func saveProfile() {
-        // Save profile model
         storageService.save(profile, forKey: profileKey)
         
-        // Save avatar image
+        
         if let avatarImage = avatarImage,
            let imageData = avatarImage.jpegData(compressionQuality: 0.8) {
             storageService.saveData(imageData, forKey: avatarImageKey)
@@ -59,12 +55,10 @@ final class UserService: UserServiceProtocol {
     }
     
     func loadProfile() {
-        // Load profile model
         if let loadedProfile = storageService.load(UserProfileModel.self, forKey: profileKey) {
             profile = loadedProfile
         }
         
-        // Load avatar image
         if let imageData = storageService.loadData(forKey: avatarImageKey),
            let image = UIImage(data: imageData) {
             avatarImage = image

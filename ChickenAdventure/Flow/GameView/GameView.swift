@@ -1,4 +1,3 @@
-
 import SwiftUI
 
 struct GameView: View {
@@ -37,7 +36,6 @@ struct GameView: View {
                 .padding(.top, 20)
                 
                 if viewModel.isEndingReached {
-                    // Для концовки - добавляем Spacer чтобы текст опустился вниз
                     Spacer()
                     sceneText
                     choiceButtonsContainer
@@ -45,7 +43,6 @@ struct GameView: View {
                         .padding(.top, 30)
                         .padding(.bottom, 40)
                 } else {
-                    // Для обычной игры - все как было
                     sceneText
                         .padding(.top, 60)
                     
@@ -73,7 +70,6 @@ struct GameView: View {
     private var endingBackgroundView: some View {
         Group {
             if viewModel.isEndingReached, let imageName = viewModel.activeEndingImageName {
-                // Полноэкранная картинка концовки
                 Image(imageName)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -83,7 +79,6 @@ struct GameView: View {
                     .opacity(showEndingImage ? 1.0 : 0.0)
                     .animation(.easeInOut(duration: 1.2), value: showEndingImage)
             } else {
-                // Обычный фон когда концовка не достигнута
                 AppBackground()
             }
         }
@@ -91,27 +86,8 @@ struct GameView: View {
     
     private var sceneText: some View {
         Group {
-            if viewModel.isEndingReached {
-                // Непрозрачная карточка для концовки
-                ScrollableTextView(text: viewModel.currentText)
-                    .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: AppTheme.cornerRadius.card)
-                            .fill(Color.appLightYellow) // БЕЗ opacity!
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: AppTheme.cornerRadius.card)
-                            .stroke(Color.appLightPink, lineWidth: 1)
-                    )
-                    .shadow(radius: 5)
-            } else {
-                // Обычная карточка
-                AppCard {
-                    ScrollableTextView(text: viewModel.currentText)
-                }
-            }
+            ScrollableTextView(text: viewModel.currentText)
         }
-        .padding(.horizontal, AppTheme.spacing.cardPadding)
     }
     
     private var choiceButtonsContainer: some View {
@@ -126,7 +102,6 @@ struct GameView: View {
         .animation(nil, value: viewModel.choices.count)
     }
 }
-
 
 #Preview {
     let dependencies = AppDependencies()
