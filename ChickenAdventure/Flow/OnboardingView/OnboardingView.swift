@@ -38,14 +38,14 @@ struct OnboardingView: View {
             // Navigation buttons
             HStack(spacing: 20) {
                 if viewModel.canGoBack {
-                    SecondaryButton("Previous") {
+                    SecondaryButton(viewModel.previousButtonTitle) {
                         viewModel.previousPage()
                     }
                 }
                 
                 Spacer()
                 
-                PrimaryButton(viewModel.isLastPage ? "Get Started" : "Next") {
+                PrimaryButton(viewModel.isLastPage ? viewModel.getStartedButtonTitle : viewModel.nextButtonTitle) {
                     if viewModel.isLastPage {
                         viewModel.completeOnboarding()
                     } else {

@@ -15,7 +15,7 @@ struct LaunchScreenView: View {
             VStack(spacing: 40) {
                 Spacer()
                 
-                    Text("Chicken Adventure")
+                    Text(viewModel.appTitle)
                         .font(AppTheme.typography.largeTitle)
                         .foregroundColor(.appDarkPink)
                         .shadow(radius: 5)

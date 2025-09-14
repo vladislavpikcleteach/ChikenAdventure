@@ -13,11 +13,11 @@ struct ProfileView: View {
             VStack(spacing: 30) {
                 // Header
                 VStack(spacing: 10) {
-                    Text("Your Profile")
+                    Text(viewModel.headerTitle)
                         .font(AppTheme.typography.largeTitle)
                         .foregroundColor(.appDarkPink)
                     
-                    Text("Create your identity for the adventure")
+                    Text(viewModel.headerSubtitle)
                         .font(AppTheme.typography.body)
                         .foregroundColor(.appDarkPink.opacity(0.7))
                         .multilineTextAlignment(.center)
@@ -46,37 +46,37 @@ struct ProfileView: View {
                     
                     // Avatar Actions
                     HStack(spacing: 15) {
-                        SecondaryButton("Gallery") {
+                        SecondaryButton(viewModel.galleryButtonTitle) {
                             viewModel.showImagePicker = true
                         }
                         
-                        SecondaryButton("Camera") {
+                        SecondaryButton(viewModel.cameraButtonTitle) {
                             viewModel.showCamera = true
                         }
                     }
                 }
                 
                 // Name Section
-                AppTextField("Your Name", placeholder: "Enter your name", text: $viewModel.tempUserName)
+                AppTextField(viewModel.nameFieldTitle, placeholder: viewModel.nameFieldPlaceholder, text: $viewModel.tempUserName)
                     .padding(.horizontal, AppTheme.spacing.screenPadding)
                 
                 
                 // Action Buttons
                 VStack(spacing: 15) {
                     // Save Profile
-                    PrimaryButton("Start Adventure", isEnabled: viewModel.canSave) {
+                    PrimaryButton(viewModel.startAdventureButtonTitle, isEnabled: viewModel.canSave) {
                         viewModel.startAdventure()
                     }
                     
                     // Delete Profile (if exists)
                     if viewModel.userProfile.hasProfile {
-                        DeleteButton("Delete Profile") {
+                        DeleteButton(viewModel.deleteProfileButtonTitle) {
                             viewModel.showDeleteAlert = true
                         }
                     }
                     
                     // Skip for now
-                    SecondaryButton("Skip for now") {
+                    SecondaryButton(viewModel.skipButtonTitle) {
                         viewModel.skipForNow()
                     }
                 }
@@ -93,13 +93,13 @@ struct ProfileView: View {
         .onChange(of: viewModel.selectedImage) { oldValue, newValue in
             viewModel.updateSelectedImage(newValue)
         }
-        .alert("Delete Profile", isPresented: $viewModel.showDeleteAlert) {
-            Button("Cancel", role: .cancel) { }
-            Button("Delete", role: .destructive) {
+        .alert(viewModel.deleteAlertTitle, isPresented: $viewModel.showDeleteAlert) {
+            Button(viewModel.cancelButtonTitle, role: .cancel) { }
+            Button(viewModel.deleteButtonTitle, role: .destructive) {
                 viewModel.deleteProfile()
             }
         } message: {
-            Text("Are you sure you want to delete your profile? This action cannot be undone.")
+            Text(viewModel.deleteAlertMessage)
         }
     }
 }

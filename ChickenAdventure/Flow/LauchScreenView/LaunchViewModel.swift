@@ -5,6 +5,9 @@ final class LaunchViewModel: ObservableObject {
     @Published var pulseScale: CGFloat = 1.0
     @Published var rotationAngle: Double = 0
     
+    // MARK: - UI Text
+    let appTitle = "Chicken Adventure"
+    
     func startAnimations() {
         isAnimating = true
         

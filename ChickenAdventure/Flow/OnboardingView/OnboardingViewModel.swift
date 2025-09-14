@@ -21,6 +21,11 @@ final class OnboardingViewModel: ObservableObject {
     let imageName = "Background"
     let totalPages = 3
     
+    // MARK: - UI Texts
+    let previousButtonTitle = "Previous"
+    let nextButtonTitle = "Next"
+    let getStartedButtonTitle = "Get Started"
+    
     // MARK: - Init
     init(navigationCoordinator: any NavigationCoordinatorProtocol) {
         self.navigationCoordinator = navigationCoordinator
