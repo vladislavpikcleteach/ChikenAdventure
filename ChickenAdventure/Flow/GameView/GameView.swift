@@ -13,12 +13,11 @@ struct GameView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                // Header with profile and restart buttons
                 HStack {
                     Button {
                         coordinator.navigate(to: .profile)
                     } label: {
-                        Image(systemName: "person.circle")
+                        Image(systemName: viewModel.profileIconName)
                             .font(.title2)
                             .foregroundColor(.appDarkPink)
                     }
@@ -29,7 +28,7 @@ struct GameView: View {
                         viewModel.restart()
                         showEndingImage = false
                     } label: {
-                        Image(systemName: "arrow.clockwise")
+                        Image(systemName: viewModel.restartIconName)
                             .font(.title2)
                             .foregroundColor(.appDarkPink)
                     }
@@ -37,24 +36,8 @@ struct GameView: View {
                 .padding(.horizontal, 30)
                 .padding(.top, 20)
                 
-                chickenAvatar
-                    .padding(.top, 30)
-                
-                // Ending image (if reached ending)
-                if viewModel.isEndingReached, let imageName = viewModel.activeEndingImageName {
-                    endingImageView(imageName: imageName)
-                        .padding(.horizontal, 20)
-                        .padding(.bottom, 20)
-                        .onAppear {
-                            showEndingImage = false
-                            withAnimation(.spring(duration: 0.8).delay(0.3)) {
-                                showEndingImage = true
-                            }
-                        }
-                }
-                
                 sceneText
-                    .padding(.top, 30)
+                    .padding(.top, 60)
                 
                 choiceButtonsContainer
                     .padding(.horizontal, 20)
@@ -62,26 +45,60 @@ struct GameView: View {
                     .padding(.bottom, 40)
             }
         }
+        .background(endingBackgroundView)
+        .onChange(of: viewModel.isEndingReached) { oldValue, newValue in
+            if newValue {
+                showEndingImage = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    showEndingImage = true
+                }
+            } else {
+                showEndingImage = false
+            }
+        }
     }
     
-    private var chickenAvatar: some View {
-        ChickenAvatar()
-    }
     
-    private func endingImageView(imageName: String) -> some View {
-        Image(imageName)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(maxHeight: 150)
-            .clipShape(RoundedRectangle(cornerRadius: 15))
-            .shadow(radius: 10)
-            .scaleEffect(showEndingImage ? 1.0 : 0.8)
-            .opacity(showEndingImage ? 1.0 : 0.0)
+    private var endingBackgroundView: some View {
+        Group {
+            if viewModel.isEndingReached, let imageName = viewModel.activeEndingImageName {
+                // Полноэкранная картинка концовки
+                Image(imageName)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .clipped()
+                    .scaleEffect(showEndingImage ? 1.0 : 1.2)
+                    .opacity(showEndingImage ? 1.0 : 0.0)
+                    .animation(.easeInOut(duration: 1.2), value: showEndingImage)
+            } else {
+                // Обычный фон когда концовка не достигнута
+                AppBackground()
+            }
+        }
     }
     
     private var sceneText: some View {
-        AppCard {
-            ScrollableTextView(text: viewModel.currentText)
+        Group {
+            if viewModel.isEndingReached {
+                // Непрозрачная карточка для концовки
+                ScrollableTextView(text: viewModel.currentText)
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: AppTheme.cornerRadius.card)
+                            .fill(Color.appLightYellow) // БЕЗ opacity!
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: AppTheme.cornerRadius.card)
+                            .stroke(Color.appLightPink, lineWidth: 1)
+                    )
+                    .shadow(radius: 5)
+            } else {
+                // Обычная карточка
+                AppCard {
+                    ScrollableTextView(text: viewModel.currentText)
+                }
+            }
         }
         .padding(.horizontal, AppTheme.spacing.cardPadding)
     }

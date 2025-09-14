@@ -16,7 +16,7 @@ struct ContentView_Previews: PreviewProvider {
 struct TextView: View {
     var body: some View {
         VStack {
-            Text("авыораолыв")
+            Text("Test View")
         }
     }
 }
