@@ -36,13 +36,24 @@ struct GameView: View {
                 .padding(.horizontal, 30)
                 .padding(.top, 20)
                 
-                sceneText
-                    .padding(.top, 60)
-                
-                choiceButtonsContainer
-                    .padding(.horizontal, 20)
-                    .padding(.top, 30)
-                    .padding(.bottom, 40)
+                if viewModel.isEndingReached {
+                    // Для концовки - добавляем Spacer чтобы текст опустился вниз
+                    Spacer()
+                    sceneText
+                    choiceButtonsContainer
+                        .padding(.horizontal, 20)
+                        .padding(.top, 30)
+                        .padding(.bottom, 40)
+                } else {
+                    // Для обычной игры - все как было
+                    sceneText
+                        .padding(.top, 60)
+                    
+                    choiceButtonsContainer
+                        .padding(.horizontal, 20)
+                        .padding(.top, 30)
+                        .padding(.bottom, 40)
+                }
             }
         }
         .background(endingBackgroundView)

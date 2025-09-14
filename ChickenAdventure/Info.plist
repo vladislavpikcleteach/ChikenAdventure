@@ -8,5 +8,9 @@
 		<string>Kalam-Light.ttf</string>
 		<string>Kalam-Regular.ttf</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Chicken Adventure needs access to your camera to take photos for your profile avatar. This helps personalize your adventure experience.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Chicken Adventure needs access to your photo library to select images for your profile avatar. This helps personalize your adventure experience.</string>
 </dict>
 </plist>

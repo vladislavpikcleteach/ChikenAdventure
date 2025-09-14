@@ -28,7 +28,7 @@ struct ProfileView: View {
                 VStack(spacing: 20) {
                     // Avatar Display
                     Button {
-                        viewModel.showImagePicker = true
+                        viewModel.openGallery()
                     } label: {
                         Group {
                             if let avatarImage = viewModel.avatarImage {
@@ -47,11 +47,11 @@ struct ProfileView: View {
                     // Avatar Actions
                     HStack(spacing: 15) {
                         SecondaryButton(viewModel.galleryButtonTitle) {
-                            viewModel.showImagePicker = true
+                            viewModel.openGallery()
                         }
                         
                         SecondaryButton(viewModel.cameraButtonTitle) {
-                            viewModel.showCamera = true
+                            viewModel.openCamera()
                         }
                     }
                 }
@@ -85,10 +85,16 @@ struct ProfileView: View {
             }
         }
         .sheet(isPresented: $viewModel.showImagePicker) {
-            ImagePicker(selectedImage: $viewModel.selectedImage, sourceType: .photoLibrary)
+            ImagePicker(
+                selectedImage: $viewModel.selectedImage, 
+                sourceType: .photoLibrary
+            )
         }
         .sheet(isPresented: $viewModel.showCamera) {
-            ImagePicker(selectedImage: $viewModel.selectedImage, sourceType: .camera)
+            ImagePicker(
+                selectedImage: $viewModel.selectedImage, 
+                sourceType: .camera
+            )
         }
         .onChange(of: viewModel.selectedImage) { oldValue, newValue in
             viewModel.updateSelectedImage(newValue)
@@ -100,6 +106,14 @@ struct ProfileView: View {
             }
         } message: {
             Text(viewModel.deleteAlertMessage)
+        }
+        .alert(viewModel.permissionAlertTitle, isPresented: $viewModel.showPermissionAlert) {
+            Button("Settings") {
+                viewModel.openAppSettings()
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text(viewModel.permissionAlertMessage)
         }
     }
 }

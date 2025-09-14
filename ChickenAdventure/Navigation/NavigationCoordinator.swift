@@ -21,10 +21,12 @@ final class NavigationCoordinator: NavigationCoordinatorProtocol {
     
     private let userService: UserService
     private let onboardingService: OnboardingServiceProtocol
+    private let permissionManager: PermissionManagerProtocol
     
-    init(userService: UserService, onboardingService: OnboardingServiceProtocol) {
+    init(userService: UserService, onboardingService: OnboardingServiceProtocol, permissionManager: PermissionManagerProtocol = PermissionManager()) {
         self.userService = userService
         self.onboardingService = onboardingService
+        self.permissionManager = permissionManager
         
         // Auto-navigate after launch screen
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
@@ -61,6 +63,10 @@ final class NavigationCoordinator: NavigationCoordinatorProtocol {
     
     func getUserService() -> UserService {
         userService
+    }
+    
+    func getPermissionManager() -> PermissionManagerProtocol {
+        permissionManager
     }
 }
 
