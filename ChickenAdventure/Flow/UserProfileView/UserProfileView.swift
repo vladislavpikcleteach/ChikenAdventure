@@ -22,7 +22,7 @@ struct ProfileView: View {
                         .foregroundColor(.appDarkPink.opacity(0.7))
                         .multilineTextAlignment(.center)
                 }
-                .padding(.top, 60)
+                .padding(.top, 20)
                 
                 // Avatar Section
                 VStack(spacing: 20) {
@@ -60,7 +60,7 @@ struct ProfileView: View {
                 AppTextField("Your Name", placeholder: "Enter your name", text: $viewModel.tempUserName)
                     .padding(.horizontal, AppTheme.spacing.screenPadding)
                 
-                Spacer(minLength: 40)
+                Spacer(minLength: 20)
                 
                 // Action Buttons
                 VStack(spacing: 15) {
@@ -82,7 +82,7 @@ struct ProfileView: View {
                     }
                 }
                 .padding(.horizontal, 30)
-                .padding(.bottom, 50)
+                .padding(.bottom, 10)
             }
         }
         .sheet(isPresented: $viewModel.showImagePicker) {
