@@ -13,7 +13,7 @@ struct OnboardingView: View {
             // Progress indicator
             ProgressIndicator(
                 currentStep: viewModel.currentPage,
-                totalSteps: OnboardingData.pages.count
+                totalSteps: viewModel.totalPages
             )
             .padding(.top, 60)
             
@@ -21,9 +21,13 @@ struct OnboardingView: View {
             
             // Content
             TabView(selection: $viewModel.currentPage) {
-                ForEach(0..<OnboardingData.pages.count, id: \.self) { index in
-                    OnboardingPageView(page: OnboardingData.pages[index])
-                        .tag(index)
+                ForEach(0..<viewModel.totalPages, id: \.self) { index in
+                    OnboardingPageView(
+                        title: viewModel.titles[index],
+                        description: viewModel.descriptions[index],
+                        imageName: viewModel.imageName
+                    )
+                    .tag(index)
                 }
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
@@ -56,12 +60,14 @@ struct OnboardingView: View {
 }
 
 struct OnboardingPageView: View {
-    let page: OnboardingPage
+    let title: String
+    let description: String
+    let imageName: String
     
     var body: some View {
         VStack(spacing: 40) {
             // Image
-            Image(page.imageName)
+            Image(imageName)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 200)
@@ -69,12 +75,12 @@ struct OnboardingPageView: View {
                 .shadow(radius: 10)
             
             VStack(spacing: 20) {
-                Text(page.title)
+                Text(title)
                     .font(AppTheme.typography.title1)
                     .foregroundColor(.appDarkPink)
                     .multilineTextAlignment(.center)
                 
-                Text(page.description)
+                Text(description)
                     .font(AppTheme.typography.bodyLarge)
                     .foregroundColor(.appDarkPink.opacity(0.8))
                     .multilineTextAlignment(.center)
@@ -89,33 +95,4 @@ struct OnboardingPageView: View {
 #Preview {
     let dependencies = AppDependencies()
     return OnboardingView(coordinator: dependencies.navigationCoordinator)
-}
-
-
-import Foundation
-
-struct OnboardingPage {
-    let title: String
-    let description: String
-    let imageName: String
-}
-
-final class OnboardingData {
-    static let pages = [
-        OnboardingPage(
-            title: "Welcome to Chicken Adventure",
-            description: "Embark on an interactive story where every choice matters. Follow our brave chicken on an incredible journey of self-discovery.",
-            imageName: "Background"
-        ),
-        OnboardingPage(
-            title: "Choose Your Path",
-            description: "Make decisions that will shape your destiny. Will you learn to fly, start a family, rebel, or explore the world?",
-            imageName: "Background"
-        ),
-        OnboardingPage(
-            title: "Multiple Endings Await",
-            description: "Your choices lead to unique endings. Create your profile and start your adventure!",
-            imageName: "Background"
-        )
-    ]
 }

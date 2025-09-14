@@ -60,7 +60,6 @@ struct ProfileView: View {
                 AppTextField("Your Name", placeholder: "Enter your name", text: $viewModel.tempUserName)
                     .padding(.horizontal, AppTheme.spacing.screenPadding)
                 
-                Spacer(minLength: 20)
                 
                 // Action Buttons
                 VStack(spacing: 15) {

@@ -95,6 +95,7 @@ struct GameView: View {
             }
         }
         .padding(.horizontal, 10)
+        .animation(nil, value: viewModel.choices.count)
     }
 }
 
