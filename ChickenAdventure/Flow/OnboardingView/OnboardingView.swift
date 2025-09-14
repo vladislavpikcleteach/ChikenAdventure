@@ -11,14 +11,10 @@ struct OnboardingView: View {
     var body: some View {
         VStack(spacing: 0) {
             // Progress indicator
-            HStack(spacing: 8) {
-                ForEach(0..<OnboardingData.pages.count, id: \.self) { index in
-                    Circle()
-                        .fill(index == viewModel.currentPage ? Color.appOrange : Color.appLightPink.opacity(0.3))
-                        .frame(width: 10, height: 10)
-                        .animation(.easeInOut, value: viewModel.currentPage)
-                }
-            }
+            ProgressIndicator(
+                currentStep: viewModel.currentPage,
+                totalSteps: OnboardingData.pages.count
+            )
             .padding(.top, 60)
             
             Spacer()
@@ -38,22 +34,20 @@ struct OnboardingView: View {
             // Navigation buttons
             HStack(spacing: 20) {
                 if viewModel.canGoBack {
-                    Button("Previous") {
+                    SecondaryButton("Previous") {
                         viewModel.previousPage()
                     }
-                    .buttonStyle(SecondaryButtonStyle())
                 }
                 
                 Spacer()
                 
-                Button(viewModel.isLastPage ? "Get Started" : "Next") {
+                PrimaryButton(viewModel.isLastPage ? "Get Started" : "Next") {
                     if viewModel.isLastPage {
                         viewModel.completeOnboarding()
                     } else {
                         viewModel.nextPage()
                     }
                 }
-                .buttonStyle(PrimaryButtonStyle())
             }
             .padding(.horizontal, 30)
             .padding(.bottom, 50)
@@ -76,12 +70,12 @@ struct OnboardingPageView: View {
             
             VStack(spacing: 20) {
                 Text(page.title)
-                    .font(.primaryBold(size: 28))
+                    .font(AppTheme.typography.title1)
                     .foregroundColor(.appDarkPink)
                     .multilineTextAlignment(.center)
                 
                 Text(page.description)
-                    .font(.primaryRegular(size: 18))
+                    .font(AppTheme.typography.bodyLarge)
                     .foregroundColor(.appDarkPink.opacity(0.8))
                     .multilineTextAlignment(.center)
                     .lineLimit(nil)
@@ -91,48 +85,6 @@ struct OnboardingPageView: View {
     }
 }
 
-struct PrimaryButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.primaryBold(size: 18))
-            .foregroundColor(.white)
-            .padding(.horizontal, 40)
-            .padding(.vertical, 16)
-            .background(
-                RoundedRectangle(cornerRadius: 25)
-                    .fill(
-                        LinearGradient(
-                            colors: [Color.appOrange, Color.appYellow],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                    .shadow(radius: configuration.isPressed ? 2 : 5)
-            )
-            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
-            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
-    }
-}
-
-struct SecondaryButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.primaryRegular(size: 16))
-            .foregroundColor(.appDarkPink)
-            .padding(.horizontal, 20)
-            .padding(.vertical, 12)
-            .background(
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(Color.appLightYellow.opacity(0.3))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 20)
-                            .stroke(Color.appLightPink, lineWidth: 2)
-                    )
-            )
-            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
-            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
-    }
-}
 
 #Preview {
     let dependencies = AppDependencies()

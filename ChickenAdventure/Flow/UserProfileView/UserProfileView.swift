@@ -14,11 +14,11 @@ struct ProfileView: View {
                 // Header
                 VStack(spacing: 10) {
                     Text("Your Profile")
-                        .font(.primaryBold(size: 32))
+                        .font(AppTheme.typography.largeTitle)
                         .foregroundColor(.appDarkPink)
                     
                     Text("Create your identity for the adventure")
-                        .font(.primaryRegular(size: 16))
+                        .font(AppTheme.typography.body)
                         .foregroundColor(.appDarkPink.opacity(0.7))
                         .multilineTextAlignment(.center)
                 }
@@ -41,86 +41,45 @@ struct ProfileView: View {
                                     .foregroundColor(.appLightPink)
                             }
                         }
-                        .frame(width: 120, height: 120)
-                        .clipShape(Circle())
-                        .overlay(
-                            Circle()
-                                .stroke(Color.appOrange, lineWidth: 4)
-                        )
-                        .shadow(radius: 10)
+                        .appAvatar()
                     }
                     
                     // Avatar Actions
                     HStack(spacing: 15) {
-                        Button {
+                        SecondaryButton("Gallery") {
                             viewModel.showImagePicker = true
-                        } label: {
-                            Label("Gallery", systemImage: "photo")
-                                .font(.primaryRegular(size: 14))
                         }
-                        .buttonStyle(SecondaryButtonStyle())
                         
-                        Button {
+                        SecondaryButton("Camera") {
                             viewModel.showCamera = true
-                        } label: {
-                            Label("Camera", systemImage: "camera")
-                                .font(.primaryRegular(size: 14))
                         }
-                        .buttonStyle(SecondaryButtonStyle())
                     }
                 }
                 
                 // Name Section
-                VStack(alignment: .leading, spacing: 15) {
-                    Text("Your Name")
-                        .font(.primaryBold(size: 18))
-                        .foregroundColor(.appDarkPink)
-                    
-                    TextField("Enter your name", text: $viewModel.tempUserName)
-                        .font(.primaryRegular(size: 16))
-                        .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: 15)
-                                .fill(Color.appLightYellow.opacity(0.3))
-                        )
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 15)
-                                .stroke(Color.appLightPink, lineWidth: 1)
-                        )
-                        .foregroundColor(.appDarkPink)
-                }
-                .padding(.horizontal, 30)
+                AppTextField("Your Name", placeholder: "Enter your name", text: $viewModel.tempUserName)
+                    .padding(.horizontal, AppTheme.spacing.screenPadding)
                 
                 Spacer(minLength: 40)
                 
                 // Action Buttons
                 VStack(spacing: 15) {
                     // Save Profile
-                    Button {
+                    PrimaryButton("Start Adventure", isEnabled: viewModel.canSave) {
                         viewModel.startAdventure()
-                    } label: {
-                        Text("Start Adventure")
                     }
-                    .buttonStyle(PrimaryButtonStyle())
-                    .disabled(!viewModel.canSave)
                     
                     // Delete Profile (if exists)
                     if viewModel.userProfile.hasProfile {
-                        Button {
+                        DeleteButton("Delete Profile") {
                             viewModel.showDeleteAlert = true
-                        } label: {
-                            Text("Delete Profile")
                         }
-                        .buttonStyle(DeleteButtonStyle())
                     }
                     
                     // Skip for now
-                    Button {
+                    SecondaryButton("Skip for now") {
                         viewModel.skipForNow()
-                    } label: {
-                        Text("Skip for now")
                     }
-                    .buttonStyle(SecondaryButtonStyle())
                 }
                 .padding(.horizontal, 30)
                 .padding(.bottom, 50)
@@ -143,23 +102,6 @@ struct ProfileView: View {
         } message: {
             Text("Are you sure you want to delete your profile? This action cannot be undone.")
         }
-    }
-}
-
-struct DeleteButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.primaryRegular(size: 16))
-            .foregroundColor(.white)
-            .padding(.horizontal, 40)
-            .padding(.vertical, 16)
-            .background(
-                RoundedRectangle(cornerRadius: 25)
-                    .fill(Color.red)
-                    .shadow(radius: configuration.isPressed ? 2 : 5)
-            )
-            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
-            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
     }
 }
 

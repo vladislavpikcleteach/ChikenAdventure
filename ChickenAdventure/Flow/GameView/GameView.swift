@@ -65,24 +65,7 @@ struct GameView: View {
     }
     
     private var chickenAvatar: some View {
-        Image(systemName: "bird.fill")
-            .font(.system(size: 80))
-            .foregroundStyle(
-                LinearGradient(
-                    colors: [
-                        Color.appYellow,
-                        Color.appOrange
-                    ],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-            )
-            .background(
-                Circle()
-                    .fill(Color.appLightYellow.opacity(0.3))
-                    .frame(width: 120, height: 120)
-            )
-            .shadow(radius: 5)
+        ChickenAvatar()
     }
     
     private func endingImageView(imageName: String) -> some View {
@@ -97,68 +80,28 @@ struct GameView: View {
     }
     
     private var sceneText: some View {
-        Text(viewModel.currentText)
-            .font(.primaryRegular(size: 18))
-            .foregroundColor(.appDarkPink)
-            .multilineTextAlignment(.center)
-            .padding(.horizontal, 20)
-            .padding(.vertical, 20)
-            .background(
-                RoundedRectangle(cornerRadius: 15)
-                    .fill(Color.appLightYellow.opacity(0.3))
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 15)
-                    .stroke(Color.appLightPink, lineWidth: 1)
-            )
-            .shadow(radius: 5)
-            .padding(.horizontal, 20)
+        AppCard {
+            Text(viewModel.currentText)
+                .font(AppTheme.typography.bodyLarge)
+                .foregroundColor(.appDarkPink)
+                .multilineTextAlignment(.center)
+                .padding(AppTheme.spacing.cardPadding)
+        }
+        .padding(.horizontal, AppTheme.spacing.cardPadding)
     }
     
     private var choiceButtonsContainer: some View {
         VStack(spacing: 15) {
             ForEach(Array(viewModel.choices.enumerated()), id: \.offset) { index, choice in
-                Button(choice.text) {
+                StoryChoiceButton(choice.text) {
                     viewModel.makeChoice(choice)
                 }
-                .buttonStyle(StoryChoiceButtonStyle())
             }
         }
         .padding(.horizontal, 10)
     }
 }
 
-struct StoryChoiceButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.primaryBold(size: 16))
-            .foregroundColor(.appDarkPink)
-            .multilineTextAlignment(.center)
-            .padding(.horizontal, 15)
-            .padding(.vertical, 20)
-            .frame(maxWidth: .infinity, minHeight: 80)
-            .background(
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(
-                        LinearGradient(
-                            colors: [
-                                Color.appLightYellow.opacity(0.6),
-                                Color.appLightPink.opacity(0.4)
-                            ],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 20)
-                            .stroke(Color.appOrange, lineWidth: 2)
-                    )
-                    .shadow(radius: configuration.isPressed ? 2 : 5)
-            )
-            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
-            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
-    }
-}
 
 #Preview {
     let dependencies = AppDependencies()

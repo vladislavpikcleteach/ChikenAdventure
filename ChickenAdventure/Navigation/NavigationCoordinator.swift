@@ -89,14 +89,7 @@ struct CoordinatorView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(backgroundView)
-    }
-    
-    private var backgroundView: some View {
-        Image("Background")
-            .resizable()
-            .aspectRatio(contentMode: .fill)
-            .ignoresSafeArea()
+        .background(AppBackground())
     }
 }
 
