@@ -4,7 +4,7 @@ import PhotosUI
 struct ProfileView: View {
     @StateObject private var viewModel: ProfileViewModel
     
-    init(userService: UserService, coordinator: Coordinator) {
+    init(userService: UserService, coordinator: NavigationCoordinator) {
         _viewModel = StateObject(wrappedValue: ProfileViewModel(userService: userService, coordinator: coordinator))
     }
     
@@ -15,11 +15,11 @@ struct ProfileView: View {
                 VStack(spacing: 10) {
                     Text("Your Profile")
                         .font(.primaryBold(size: 32))
-                        .foregroundColor(Color("darkPinkColor"))
+                        .foregroundColor(.appDarkPink)
                     
                     Text("Create your identity for the adventure")
                         .font(.primaryRegular(size: 16))
-                        .foregroundColor(Color("darkPinkColor").opacity(0.7))
+                        .foregroundColor(.appDarkPink.opacity(0.7))
                         .multilineTextAlignment(.center)
                 }
                 .padding(.top, 60)
@@ -38,14 +38,14 @@ struct ProfileView: View {
                             } else {
                                 Image(systemName: "person.crop.circle.fill")
                                     .font(.system(size: 80))
-                                    .foregroundColor(Color("lightPinkColor"))
+                                    .foregroundColor(.appLightPink)
                             }
                         }
                         .frame(width: 120, height: 120)
                         .clipShape(Circle())
                         .overlay(
                             Circle()
-                                .stroke(Color("orangeColor"), lineWidth: 4)
+                                .stroke(Color.appOrange, lineWidth: 4)
                         )
                         .shadow(radius: 10)
                     }
@@ -74,17 +74,20 @@ struct ProfileView: View {
                 VStack(alignment: .leading, spacing: 15) {
                     Text("Your Name")
                         .font(.primaryBold(size: 18))
-                        .foregroundColor(Color("darkPinkColor"))
+                        .foregroundColor(.appDarkPink)
                     
                     TextField("Enter your name", text: $viewModel.tempUserName)
                         .font(.primaryRegular(size: 16))
                         .padding()
                         .background(
                             RoundedRectangle(cornerRadius: 15)
-                                .fill(Color("lightYellowColor").opacity(0.3))
-                                .stroke(Color("lightPinkColor"), lineWidth: 1)
+                                .fill(Color.appLightYellow.opacity(0.3))
                         )
-                        .foregroundColor(Color("darkPinkColor"))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(Color.appLightPink, lineWidth: 1)
+                        )
+                        .foregroundColor(.appDarkPink)
                 }
                 .padding(.horizontal, 30)
                 
@@ -129,8 +132,8 @@ struct ProfileView: View {
         .sheet(isPresented: $viewModel.showCamera) {
             ImagePicker(selectedImage: $viewModel.selectedImage, sourceType: .camera)
         }
-        .onChange(of: viewModel.selectedImage) { newImage in
-            viewModel.updateSelectedImage(newImage)
+        .onChange(of: viewModel.selectedImage) { oldValue, newValue in
+            viewModel.updateSelectedImage(newValue)
         }
         .alert("Delete Profile", isPresented: $viewModel.showDeleteAlert) {
             Button("Cancel", role: .cancel) { }
@@ -199,6 +202,7 @@ struct ImagePicker: UIViewControllerRepresentable {
 }
 
 #Preview {
-    ProfileView(userService: UserService(), coordinator: Coordinator())
+    let dependencies = AppDependencies()
+    return ProfileView(userService: dependencies.userService, coordinator: dependencies.navigationCoordinator)
 }
 

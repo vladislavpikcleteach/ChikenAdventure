@@ -9,7 +9,7 @@ final class ProfileViewModel: ObservableObject {
     @Published var showDeleteAlert = false
     
     @ObservedObject private var userService: UserService
-    private let coordinator: Coordinator
+    private let coordinator: NavigationCoordinator
     
     var canSave: Bool {
         !tempUserName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -23,7 +23,7 @@ final class ProfileViewModel: ObservableObject {
         userService.avatarImage
     }
     
-    init(userService: UserService, coordinator: Coordinator) {
+    init(userService: UserService, coordinator: NavigationCoordinator) {
         self.userService = userService
         self.coordinator = coordinator
         self.tempUserName = userService.profile.userName

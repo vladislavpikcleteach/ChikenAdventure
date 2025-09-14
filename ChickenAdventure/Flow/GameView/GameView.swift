@@ -3,7 +3,11 @@ import SwiftUI
 
 struct GameView: View {
     @StateObject private var viewModel = GameViewModel()
-    @EnvironmentObject var coordinator: Coordinator
+    private let coordinator: NavigationCoordinator
+    
+    init(coordinator: NavigationCoordinator) {
+        self.coordinator = coordinator
+    }
     @State private var showEndingImage = false
     
     var body: some View {
@@ -15,7 +19,7 @@ struct GameView: View {
                 } label: {
                     Image(systemName: "person.circle")
                         .font(.title2)
-                        .foregroundColor(Color("darkPinkColor"))
+                        .foregroundColor(.appDarkPink)
                 }
                 
                 Spacer()
@@ -26,7 +30,7 @@ struct GameView: View {
                 } label: {
                     Image(systemName: "arrow.clockwise")
                         .font(.title2)
-                        .foregroundColor(Color("darkPinkColor"))
+                        .foregroundColor(.appDarkPink)
                 }
             }
             .padding(.horizontal, 30)
@@ -66,8 +70,8 @@ struct GameView: View {
             .foregroundStyle(
                 LinearGradient(
                     colors: [
-                        Color("yellowColor"),
-                        Color("orangeColor")
+                        Color.appYellow,
+                        Color.appOrange
                     ],
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
@@ -75,7 +79,7 @@ struct GameView: View {
             )
             .background(
                 Circle()
-                    .fill(Color("lightYellowColor").opacity(0.3))
+                    .fill(Color.appLightYellow.opacity(0.3))
                     .frame(width: 120, height: 120)
             )
             .shadow(radius: 5)
@@ -95,16 +99,19 @@ struct GameView: View {
     private var sceneText: some View {
         Text(viewModel.currentText)
             .font(.primaryRegular(size: 18))
-            .foregroundColor(Color("darkPinkColor"))
+            .foregroundColor(.appDarkPink)
             .multilineTextAlignment(.center)
             .padding(.horizontal, 20)
             .padding(.vertical, 20)
             .background(
                 RoundedRectangle(cornerRadius: 15)
-                    .fill(Color("lightYellowColor").opacity(0.3))
-                    .stroke(Color("lightPinkColor"), lineWidth: 1)
-                    .shadow(radius: 5)
+                    .fill(Color.appLightYellow.opacity(0.3))
             )
+            .overlay(
+                RoundedRectangle(cornerRadius: 15)
+                    .stroke(Color.appLightPink, lineWidth: 1)
+            )
+            .shadow(radius: 5)
             .padding(.horizontal, 20)
     }
     
@@ -125,7 +132,7 @@ struct StoryChoiceButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.primaryBold(size: 16))
-            .foregroundColor(Color("darkPinkColor"))
+            .foregroundColor(.appDarkPink)
             .multilineTextAlignment(.center)
             .padding(.horizontal, 15)
             .padding(.vertical, 20)
@@ -135,14 +142,17 @@ struct StoryChoiceButtonStyle: ButtonStyle {
                     .fill(
                         LinearGradient(
                             colors: [
-                                Color("lightYellowColor").opacity(0.6),
-                                Color("lightPinkColor").opacity(0.4)
+                                Color.appLightYellow.opacity(0.6),
+                                Color.appLightPink.opacity(0.4)
                             ],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )
                     )
-                    .stroke(Color("orangeColor"), lineWidth: 2)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke(Color.appOrange, lineWidth: 2)
+                    )
                     .shadow(radius: configuration.isPressed ? 2 : 5)
             )
             .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
@@ -151,5 +161,6 @@ struct StoryChoiceButtonStyle: ButtonStyle {
 }
 
 #Preview {
-    GameView()
+    let dependencies = AppDependencies()
+    return GameView(coordinator: dependencies.navigationCoordinator)
 }

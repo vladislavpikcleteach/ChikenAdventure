@@ -2,8 +2,11 @@
 import SwiftUI
 
 struct OnboardingView: View {
-    @EnvironmentObject var coordinator: Coordinator
-    @State private var currentPage = 0
+    @StateObject private var viewModel: OnboardingViewModel
+    
+    init(coordinator: NavigationCoordinator) {
+        _viewModel = StateObject(wrappedValue: OnboardingViewModel(navigationCoordinator: coordinator))
+    }
     
     var body: some View {
         VStack(spacing: 0) {
@@ -11,9 +14,9 @@ struct OnboardingView: View {
             HStack(spacing: 8) {
                 ForEach(0..<OnboardingData.pages.count, id: \.self) { index in
                     Circle()
-                        .fill(index == currentPage ? Color("orangeColor") : Color("lightPinkColor").opacity(0.3))
+                        .fill(index == viewModel.currentPage ? Color.appOrange : Color.appLightPink.opacity(0.3))
                         .frame(width: 10, height: 10)
-                        .animation(.easeInOut, value: currentPage)
+                        .animation(.easeInOut, value: viewModel.currentPage)
                 }
             }
             .padding(.top, 60)
@@ -21,37 +24,33 @@ struct OnboardingView: View {
             Spacer()
             
             // Content
-            TabView(selection: $currentPage) {
+            TabView(selection: $viewModel.currentPage) {
                 ForEach(0..<OnboardingData.pages.count, id: \.self) { index in
                     OnboardingPageView(page: OnboardingData.pages[index])
                         .tag(index)
                 }
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-            .animation(.easeInOut, value: currentPage)
+            .animation(.easeInOut, value: viewModel.currentPage)
             
             Spacer()
             
             // Navigation buttons
             HStack(spacing: 20) {
-                if currentPage > 0 {
+                if viewModel.canGoBack {
                     Button("Previous") {
-                        withAnimation {
-                            currentPage -= 1
-                        }
+                        viewModel.previousPage()
                     }
                     .buttonStyle(SecondaryButtonStyle())
                 }
                 
                 Spacer()
                 
-                Button(currentPage == OnboardingData.pages.count - 1 ? "Get Started" : "Next") {
-                    if currentPage == OnboardingData.pages.count - 1 {
-                        coordinator.completeOnboarding()
+                Button(viewModel.isLastPage ? "Get Started" : "Next") {
+                    if viewModel.isLastPage {
+                        viewModel.completeOnboarding()
                     } else {
-                        withAnimation {
-                            currentPage += 1
-                        }
+                        viewModel.nextPage()
                     }
                 }
                 .buttonStyle(PrimaryButtonStyle())
@@ -78,12 +77,12 @@ struct OnboardingPageView: View {
             VStack(spacing: 20) {
                 Text(page.title)
                     .font(.primaryBold(size: 28))
-                    .foregroundColor(Color("darkPinkColor"))
+                    .foregroundColor(.appDarkPink)
                     .multilineTextAlignment(.center)
                 
                 Text(page.description)
                     .font(.primaryRegular(size: 18))
-                    .foregroundColor(Color("darkPinkColor").opacity(0.8))
+                    .foregroundColor(.appDarkPink.opacity(0.8))
                     .multilineTextAlignment(.center)
                     .lineLimit(nil)
             }
@@ -103,7 +102,7 @@ struct PrimaryButtonStyle: ButtonStyle {
                 RoundedRectangle(cornerRadius: 25)
                     .fill(
                         LinearGradient(
-                            colors: [Color("orangeColor"), Color("yellowColor")],
+                            colors: [Color.appOrange, Color.appYellow],
                             startPoint: .leading,
                             endPoint: .trailing
                         )
@@ -119,13 +118,16 @@ struct SecondaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.primaryRegular(size: 16))
-            .foregroundColor(Color("darkPinkColor"))
+            .foregroundColor(.appDarkPink)
             .padding(.horizontal, 20)
             .padding(.vertical, 12)
             .background(
                 RoundedRectangle(cornerRadius: 20)
-                    .stroke(Color("lightPinkColor"), lineWidth: 2)
-                    .background(Color("lightYellowColor").opacity(0.3))
+                    .fill(Color.appLightYellow.opacity(0.3))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke(Color.appLightPink, lineWidth: 2)
+                    )
             )
             .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
             .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
@@ -133,8 +135,8 @@ struct SecondaryButtonStyle: ButtonStyle {
 }
 
 #Preview {
-    OnboardingView()
-        .environmentObject(Coordinator())
+    let dependencies = AppDependencies()
+    return OnboardingView(coordinator: dependencies.navigationCoordinator)
 }
 
 

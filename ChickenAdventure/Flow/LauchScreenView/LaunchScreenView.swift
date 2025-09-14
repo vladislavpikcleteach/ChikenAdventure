@@ -2,9 +2,7 @@
 import SwiftUI
 
 struct LaunchScreenView: View {
-    @State private var isAnimating = false
-    @State private var pulseScale: CGFloat = 1.0
-    @State private var rotationAngle: Double = 0
+    @StateObject private var viewModel = LaunchViewModel()
     
     var body: some View {
         ZStack {
@@ -19,7 +17,7 @@ struct LaunchScreenView: View {
                 
                 Text("Chicken Adventure")
                     .font(.primaryBold(size: 32))
-                    .foregroundColor(Color("darkPinkColor"))
+                    .foregroundColor(.appDarkPink)
                     .shadow(radius: 5)
                 
                 Spacer()
@@ -28,14 +26,14 @@ struct LaunchScreenView: View {
                 HStack(spacing: 8) {
                     ForEach(0..<3) { index in
                         Circle()
-                            .fill(Color("lightPinkColor"))
+                            .fill(Color.appLightPink)
                             .frame(width: 12, height: 12)
-                            .scaleEffect(isAnimating ? 1.2 : 0.8)
+                            .scaleEffect(viewModel.isAnimating ? 1.2 : 0.8)
                             .animation(
                                 .easeInOut(duration: 0.6)
                                 .repeatForever()
                                 .delay(Double(index) * 0.2),
-                                value: isAnimating
+                                value: viewModel.isAnimating
                             )
                     }
                 }
@@ -43,21 +41,7 @@ struct LaunchScreenView: View {
             }
         }
         .onAppear {
-            startAnimations()
-        }
-    }
-    
-    private func startAnimations() {
-        isAnimating = true
-        
-        // Pulse animation
-        withAnimation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true)) {
-            pulseScale = 1.15
-        }
-        
-        // Rotation animation
-        withAnimation(.linear(duration: 4.0).repeatForever(autoreverses: false)) {
-            rotationAngle = 360
+            viewModel.startAnimations()
         }
     }
 }
