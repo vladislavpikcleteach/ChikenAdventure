@@ -31,6 +31,14 @@ struct ScrollableTextView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
         }
         .frame(minHeight: minHeight, maxHeight: maxHeight)
+        .background(
+            RoundedRectangle(cornerRadius: AppTheme.cornerRadius.medium)
+                .fill(Color.appLightYellow)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: AppTheme.cornerRadius.medium)
+                .stroke(Color.appLightPink, lineWidth: 1)
+        )
     }
 }
 

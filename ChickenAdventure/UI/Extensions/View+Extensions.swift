@@ -5,7 +5,7 @@ extension View {
         self
             .background(
                 RoundedRectangle(cornerRadius: AppTheme.cornerRadius.card)
-                    .fill(Color.appLightYellow.opacity(0.3))
+                    .fill(Color.appLightYellow)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: AppTheme.cornerRadius.card)
@@ -36,7 +36,7 @@ extension View {
             .padding(AppTheme.spacing.md)
             .background(
                 RoundedRectangle(cornerRadius: AppTheme.cornerRadius.medium)
-                    .fill(Color.appLightYellow.opacity(0.3))
+                    .fill(Color.appLightYellow)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: AppTheme.cornerRadius.medium)

@@ -81,7 +81,7 @@ struct OnboardingPageView: View {
                 
                 Text(description)
                     .font(AppTheme.typography.bodyLarge)
-                    .foregroundColor(.appDarkPink.opacity(0.8))
+                    .foregroundColor(.appDarkPink)
                     .multilineTextAlignment(.center)
                     .lineLimit(nil)
             }

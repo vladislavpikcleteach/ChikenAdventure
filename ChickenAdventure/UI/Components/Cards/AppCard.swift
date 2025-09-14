@@ -23,7 +23,7 @@ struct AppCard<Content: View>: View {
                 
                 Text("With some content inside")
                     .font(AppTheme.typography.body)
-                    .foregroundColor(Color.appDarkPink.opacity(0.7))
+                    .foregroundColor(Color.appDarkPink)
             }
             .padding()
         }

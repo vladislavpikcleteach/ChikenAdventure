@@ -19,7 +19,7 @@ struct ChickenAvatar: View {
             )
             .background(
                 Circle()
-                    .fill(Color.appLightYellow.opacity(0.3))
+                    .fill(Color.appLightYellow)
                     .frame(width: size + 40, height: size + 40)
             )
             .shadow(radius: 5)

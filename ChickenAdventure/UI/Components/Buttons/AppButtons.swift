@@ -122,7 +122,7 @@ struct SecondaryButtonStyle: ButtonStyle {
         configuration.label
             .background(
                 RoundedRectangle(cornerRadius: AppTheme.cornerRadius.large)
-                    .fill(Color.appLightYellow.opacity(0.3))
+                    .fill(Color.appLightYellow)
                     .overlay(
                         RoundedRectangle(cornerRadius: AppTheme.cornerRadius.large)
                             .stroke(Color.appLightPink, lineWidth: 2)

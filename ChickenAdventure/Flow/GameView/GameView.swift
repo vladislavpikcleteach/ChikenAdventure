@@ -7,7 +7,6 @@ struct GameView: View {
     init(coordinator: NavigationCoordinator) {
         self.coordinator = coordinator
     }
-    @State private var showEndingImage = false
     
     var body: some View {
         ScrollView {
@@ -25,7 +24,6 @@ struct GameView: View {
                     
                     Button {
                         viewModel.restart()
-                        showEndingImage = false
                     } label: {
                         Image(systemName: viewModel.restartIconName)
                             .font(.title2)
@@ -35,35 +33,16 @@ struct GameView: View {
                 .padding(.horizontal, 30)
                 .padding(.top, 20)
                 
-                if viewModel.isEndingReached {
-                    Spacer()
-                    sceneText
-                    choiceButtonsContainer
-                        .padding(.horizontal, 20)
-                        .padding(.top, 30)
-                        .padding(.bottom, 40)
-                } else {
-                    sceneText
-                        .padding(.top, 60)
-                    
-                    choiceButtonsContainer
-                        .padding(.horizontal, 20)
-                        .padding(.top, 30)
-                        .padding(.bottom, 40)
-                }
+                sceneText
+                    .padding(.top, 60)
+                
+                choiceButtonsContainer
+                    .padding(.horizontal, 20)
+                    .padding(.top, 30)
+                    .padding(.bottom, 40)
             }
         }
         .background(endingBackgroundView)
-        .onChange(of: viewModel.isEndingReached) { oldValue, newValue in
-            if newValue {
-                showEndingImage = false
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    showEndingImage = true
-                }
-            } else {
-                showEndingImage = false
-            }
-        }
     }
     
     
@@ -75,9 +54,6 @@ struct GameView: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .clipped()
-                    .scaleEffect(showEndingImage ? 1.0 : 1.2)
-                    .opacity(showEndingImage ? 1.0 : 0.0)
-                    .animation(.easeInOut(duration: 1.2), value: showEndingImage)
             } else {
                 AppBackground()
             }
@@ -87,6 +63,7 @@ struct GameView: View {
     private var sceneText: some View {
         Group {
             ScrollableTextView(text: viewModel.currentText)
+                .padding(.horizontal, 20)
         }
     }
     

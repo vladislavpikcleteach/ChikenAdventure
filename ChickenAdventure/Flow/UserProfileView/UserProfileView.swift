@@ -18,7 +18,7 @@ struct ProfileView: View {
                     
                     Text(viewModel.headerSubtitle)
                         .font(AppTheme.typography.body)
-                        .foregroundColor(.appDarkPink.opacity(0.7))
+                        .foregroundColor(.appDarkPink)
                         .multilineTextAlignment(.center)
                 }
                 .padding(.top, 20)
