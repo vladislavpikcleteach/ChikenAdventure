@@ -17,7 +17,11 @@ final class OnboardingViewModel: ObservableObject {
         "Your choices lead to unique endings. Create your profile and start your adventure!"
     ]
     
-    let imageName = "Background"
+    let endingImages = [
+        "TheChickenStartedAFamily",
+        "TheСhickenLearnedToFly", 
+        "TheChickenBecameATraveler"
+    ]
     let totalPages = 3
     
     let previousButtonTitle = "Previous"
@@ -34,6 +38,10 @@ final class OnboardingViewModel: ObservableObject {
     
     var currentDescription: String {
         descriptions[currentPage]
+    }
+    
+    var currentEndingImage: String {
+        endingImages[currentPage]
     }
     
     var isLastPage: Bool {

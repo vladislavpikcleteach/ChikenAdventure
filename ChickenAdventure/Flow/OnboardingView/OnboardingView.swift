@@ -23,7 +23,7 @@ struct OnboardingView: View {
                     OnboardingPageView(
                         title: viewModel.titles[index],
                         description: viewModel.descriptions[index],
-                        imageName: viewModel.imageName
+                        endingImageName: viewModel.endingImages[index]
                     )
                     .tag(index)
                 }
@@ -59,16 +59,19 @@ struct OnboardingView: View {
 struct OnboardingPageView: View {
     let title: String
     let description: String
-    let imageName: String
+    let endingImageName: String
     
     var body: some View {
-        VStack(spacing: 40) {
-            Image(imageName)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(height: 200)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-                .shadow(radius: 10)
+        VStack(spacing: 20) {
+            AppCard {
+                Image(endingImageName)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 250)
+                    .clipShape(RoundedRectangle(cornerRadius: 15))
+            }
+            .padding(.top, 20)
+            .padding(.horizontal, 20)
             
             VStack(spacing: 20) {
                 Text(title)
@@ -82,7 +85,7 @@ struct OnboardingPageView: View {
                     .multilineTextAlignment(.center)
                     .lineLimit(nil)
             }
-            .padding(.horizontal, 40)
+            .padding(.horizontal, 20)
         }
     }
 }
