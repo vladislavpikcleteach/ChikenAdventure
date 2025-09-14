@@ -10,14 +10,17 @@ enum Screens: CaseIterable {
 
 final class Coordinator: ObservableObject {
     @Published var actualScreen: Screens
-    @StateObject private var userProfile = UserProfile()
+    private let userService: UserService
+    private let storageService: StorageServiceProtocol
     
     private var hasSeenOnboarding: Bool {
-        get { UserDefaults.standard.bool(forKey: "hasSeenOnboarding") }
-        set { UserDefaults.standard.set(newValue, forKey: "hasSeenOnboarding") }
+        get { storageService.loadBool(forKey: "hasSeenOnboarding") }
+        set { storageService.saveBool(newValue, forKey: "hasSeenOnboarding") }
     }
     
-    init() {
+    init(storageService: StorageServiceProtocol = UserDefaultsStorageService()) {
+        self.storageService = storageService
+        self.userService = UserService(storageService: storageService)
         // Start with launch screen
         actualScreen = .launchScreen
         
@@ -29,7 +32,7 @@ final class Coordinator: ObservableObject {
     
     private func checkInitialScreen() {
         withAnimation(.spring(duration: 0.5)) {
-            if !hasSeenOnboarding || !userProfile.hasProfile {
+            if !hasSeenOnboarding || !userService.profile.hasProfile {
                 actualScreen = .onboarding
             } else {
                 actualScreen = .gameView
@@ -47,15 +50,15 @@ final class Coordinator: ObservableObject {
     
     func completeOnboarding() {
         hasSeenOnboarding = true
-        if userProfile.hasProfile {
+        if userService.profile.hasProfile {
             navigate(to: .gameView)
         } else {
             navigate(to: .profile)
         }
     }
     
-    func getUserProfile() -> UserProfile {
-        userProfile
+    func getUserService() -> UserService {
+        userService
     }
 }
 
@@ -74,8 +77,7 @@ struct CoordinatorView: View {
                     .environmentObject(coordinator)
                 
             case .profile:
-                ProfileView()
-                    .environmentObject(coordinator)
+                ProfileView(userService: coordinator.getUserService(), coordinator: coordinator)
                 
             case .gameView:
                 GameView()

@@ -17,29 +17,10 @@ struct LaunchScreenView: View {
             VStack(spacing: 40) {
                 Spacer()
                 
-                // Animated chicken icon
-                VStack(spacing: 20) {
-//                    Image(systemName: "bird.fill")
-//                        .font(.system(size: 100))
-//                        .foregroundStyle(
-//                            LinearGradient(
-//                                colors: [
-//                                    Color("yellowColor"),
-//                                    Color("orangeColor")
-//                                ],
-//                                startPoint: .topLeading,
-//                                endPoint: .bottomTrailing
-//                            )
-//                        )
-//                        .scaleEffect(pulseScale)
-//                        .rotationEffect(.degrees(rotationAngle))
-//                        .shadow(radius: 10)
-                    
-                    Text("Chicken Adventure")
-                        .font(.primaryBold(size: 32))
-                        .foregroundColor(Color("darkPinkColor"))
-                        .shadow(radius: 5)
-                }
+                Text("Chicken Adventure")
+                    .font(.primaryBold(size: 32))
+                    .foregroundColor(Color("darkPinkColor"))
+                    .shadow(radius: 5)
                 
                 Spacer()
                 

@@ -2,15 +2,10 @@ import SwiftUI
 import PhotosUI
 
 struct ProfileView: View {
-    @EnvironmentObject var coordinator: Coordinator
-    @State private var tempUserName = ""
-    @State private var showImagePicker = false
-    @State private var showCamera = false
-    @State private var showDeleteAlert = false
-    @State private var selectedImage: UIImage?
+    @StateObject private var viewModel: ProfileViewModel
     
-    private var userProfile: UserProfile {
-        coordinator.getUserProfile()
+    init(userService: UserService, coordinator: Coordinator) {
+        _viewModel = StateObject(wrappedValue: ProfileViewModel(userService: userService, coordinator: coordinator))
     }
     
     var body: some View {
@@ -33,10 +28,10 @@ struct ProfileView: View {
                 VStack(spacing: 20) {
                     // Avatar Display
                     Button {
-                        showImagePicker = true
+                        viewModel.showImagePicker = true
                     } label: {
                         Group {
-                            if let avatarImage = userProfile.avatarImage {
+                            if let avatarImage = viewModel.avatarImage {
                                 Image(uiImage: avatarImage)
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
@@ -58,7 +53,7 @@ struct ProfileView: View {
                     // Avatar Actions
                     HStack(spacing: 15) {
                         Button {
-                            showImagePicker = true
+                            viewModel.showImagePicker = true
                         } label: {
                             Label("Gallery", systemImage: "photo")
                                 .font(.primaryRegular(size: 14))
@@ -66,7 +61,7 @@ struct ProfileView: View {
                         .buttonStyle(SecondaryButtonStyle())
                         
                         Button {
-                            showCamera = true
+                            viewModel.showCamera = true
                         } label: {
                             Label("Camera", systemImage: "camera")
                                 .font(.primaryRegular(size: 14))
@@ -81,7 +76,7 @@ struct ProfileView: View {
                         .font(.primaryBold(size: 18))
                         .foregroundColor(Color("darkPinkColor"))
                     
-                    TextField("Enter your name", text: $tempUserName)
+                    TextField("Enter your name", text: $viewModel.tempUserName)
                         .font(.primaryRegular(size: 16))
                         .padding()
                         .background(
@@ -99,19 +94,17 @@ struct ProfileView: View {
                 VStack(spacing: 15) {
                     // Save Profile
                     Button {
-                        userProfile.userName = tempUserName
-                        userProfile.saveProfile()
-                        coordinator.navigate(to: .gameView)
+                        viewModel.startAdventure()
                     } label: {
                         Text("Start Adventure")
                     }
                     .buttonStyle(PrimaryButtonStyle())
-                    .disabled(tempUserName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    .disabled(!viewModel.canSave)
                     
                     // Delete Profile (if exists)
-                    if userProfile.hasProfile {
+                    if viewModel.userProfile.hasProfile {
                         Button {
-                            showDeleteAlert = true
+                            viewModel.showDeleteAlert = true
                         } label: {
                             Text("Delete Profile")
                         }
@@ -120,7 +113,7 @@ struct ProfileView: View {
                     
                     // Skip for now
                     Button {
-                        coordinator.navigate(to: .gameView)
+                        viewModel.skipForNow()
                     } label: {
                         Text("Skip for now")
                     }
@@ -130,25 +123,19 @@ struct ProfileView: View {
                 .padding(.bottom, 50)
             }
         }
-        .onAppear {
-            tempUserName = userProfile.userName
+        .sheet(isPresented: $viewModel.showImagePicker) {
+            ImagePicker(selectedImage: $viewModel.selectedImage, sourceType: .photoLibrary)
         }
-        .sheet(isPresented: $showImagePicker) {
-            ImagePicker(selectedImage: $selectedImage, sourceType: .photoLibrary)
+        .sheet(isPresented: $viewModel.showCamera) {
+            ImagePicker(selectedImage: $viewModel.selectedImage, sourceType: .camera)
         }
-        .sheet(isPresented: $showCamera) {
-            ImagePicker(selectedImage: $selectedImage, sourceType: .camera)
+        .onChange(of: viewModel.selectedImage) { newImage in
+            viewModel.updateSelectedImage(newImage)
         }
-        .onChange(of: selectedImage) { newImage in
-            if let newImage = newImage {
-                userProfile.avatarImage = newImage
-            }
-        }
-        .alert("Delete Profile", isPresented: $showDeleteAlert) {
+        .alert("Delete Profile", isPresented: $viewModel.showDeleteAlert) {
             Button("Cancel", role: .cancel) { }
             Button("Delete", role: .destructive) {
-                userProfile.deleteProfile()
-                tempUserName = ""
+                viewModel.deleteProfile()
             }
         } message: {
             Text("Are you sure you want to delete your profile? This action cannot be undone.")
@@ -212,53 +199,6 @@ struct ImagePicker: UIViewControllerRepresentable {
 }
 
 #Preview {
-    ProfileView()
-        .environmentObject(Coordinator())
+    ProfileView(userService: UserService(), coordinator: Coordinator())
 }
 
-
-import SwiftUI
-
-final class UserProfile: ObservableObject {
-    @Published var userName: String = ""
-    @Published var avatarImage: UIImage?
-    
-    private let userDefaults = UserDefaults.standard
-    private let userNameKey = "userName"
-    private let avatarImageKey = "avatarImage"
-    
-    init() {
-        loadProfile()
-    }
-    
-    func saveProfile() {
-        userDefaults.set(userName, forKey: userNameKey)
-        
-        if let avatarImage = avatarImage,
-           let imageData = avatarImage.jpegData(compressionQuality: 0.8) {
-            userDefaults.set(imageData, forKey: avatarImageKey)
-        } else {
-            userDefaults.removeObject(forKey: avatarImageKey)
-        }
-    }
-    
-    func loadProfile() {
-        userName = userDefaults.string(forKey: userNameKey) ?? ""
-        
-        if let imageData = userDefaults.data(forKey: avatarImageKey),
-           let image = UIImage(data: imageData) {
-            avatarImage = image
-        }
-    }
-    
-    func deleteProfile() {
-        userName = ""
-        avatarImage = nil
-        userDefaults.removeObject(forKey: userNameKey)
-        userDefaults.removeObject(forKey: avatarImageKey)
-    }
-    
-    var hasProfile: Bool {
-        !userName.isEmpty
-    }
-}
